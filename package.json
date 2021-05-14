@@ -14,6 +14,8 @@
     "http-errors": "~1.6.3",
     "jquery": "3.5.x",
     "morgan": "~1.9.1",
+    "pg": "^8.6.0",
+    "pg-hstore": "^2.3.3",
     "popper.js": "1.16.x",
     "sequelize": "^6.6.2",
     "sequelize-cli": "^6.2.0"
