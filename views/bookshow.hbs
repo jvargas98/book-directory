@@ -1,0 +1,51 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="card mb-3 col-12">
+      <div class="row no-gutters">
+        <div class="col-md-4 p-2">
+          <img src="{{book.book_cover}}" alt="...">
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            {{#if book}}<h3 class="card-title">Title: {{book.title}}</h3>{{/if}}
+            {{#if book}}<p>Author: {{book.author}}</p>{{/if}}
+            {{#if book}}<p>Abstract: {{book.abstract}}</p>{{/if}}
+            <p class="card-text">Publication date:<small class="text-muted">{{#if book}}<p>{{book.publication_date}}</p>
+                {{/if}}</small>
+            </p>
+          </div>
+        </div>
+      </div>
+      {{#if book}}
+      <div class="col-2 m-4">
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">Delete</button>
+        <a class="btn btn-success" href="/books/edit?id={{book.id}}" role="button">Edit</a>
+      </div>
+      {{/if}}
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method='POST' action='/books/destroy'>
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Delete {{book.title}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure?</p>
+          <input type='hidden' name='id' value='{{#if book }}{{id}}{{/if}}' />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Confirm</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

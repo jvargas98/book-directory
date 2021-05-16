@@ -1,2 +1,25 @@
 <h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
+<div class="container-fluid">
+  <a class="btn btn-primary mb-4" href="/books/new" role="button">Add book</a>
+  <div class="row">
+    {{#each books}}
+    <div class="col-3">
+      <div class="card mb-3" style="max-width: 540px;">
+        <div class="row no-gutters">
+          <div class="col-md-4">
+            <img src="{{book_cover}}" class="card-img-top" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{title}}</h5>
+              <p class="card-text">{{author}}</p>
+              <p class="card-text"><small class="text-muted">{{publication_date}}</small></p>
+              <a href='books/view?id={{id}}' class="btn btn-link">View</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+</div>
