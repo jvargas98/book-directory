@@ -8,7 +8,10 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      this.belongsTo(models.User, {
+        foreignKey: 'userId',
+        onDelete: 'CASCADE',
+      });
     }
   }
   Book.init(
@@ -18,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       publication_date: DataTypes.STRING,
       abstract: DataTypes.STRING,
       book_cover: DataTypes.STRING,
+      userId: DataTypes.INTEGER,
     },
     {
       sequelize,

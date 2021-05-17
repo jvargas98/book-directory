@@ -1,6 +1,7 @@
 /* eslint-disable consistent-return */
 const express = require('express');
 const passport = require('passport');
+
 const router = express.Router();
 
 const usersController = require('../controllers/users_controller');
