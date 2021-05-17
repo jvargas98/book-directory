@@ -3,6 +3,10 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const passport = require('passport');
+const session = require('express-session');
+const flash = require('express-flash');
+const db = require('./models');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -33,6 +37,20 @@ app.use(
     path.join(__dirname, 'node_modules', 'popper.js', 'dist', 'umd'),
   ),
 );
+
+// load passport strategies
+const initializePassport = require('./config/passport');
+
+initializePassport(passport, db.users);
+
+app.use(flash());
+
+// For passport
+app.use(
+  session({ secret: 'keyboard cat', resave: true, saveUninitialized: true }),
+); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
