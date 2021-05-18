@@ -1,6 +1,10 @@
 const PDFDocument = require('pdfkit');
 const { query } = require('express');
+const hbs = require('nodemailer-express-handlebars');
+const MailConfig = require('../config/email');
 const db = require('../models');
+
+const gmailTransport = MailConfig.GmailTransport;
 
 const Book = db.books;
 const User = db.users;
@@ -53,6 +57,7 @@ controller.create = async (req, res, next) => {
         book_cover: req.body.book_cover,
         userId: req.user.id,
       });
+      controller.sendEmail(req, 'created');
       res.redirect('/');
     } else {
       await controller.update({
@@ -98,6 +103,7 @@ controller.update = async (book) => {
 controller.destroy = async (req, res, next) => {
   try {
     await Book.destroy({ where: { id: req.body.id } });
+    controller.sendEmail(req, 'deleted');
     res.redirect('/');
   } catch (err) {
     next(err);
@@ -135,6 +141,27 @@ controller.generatePdf = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+};
+
+controller.sendEmail = (req, title) => {
+  MailConfig.ViewOption(gmailTransport, hbs);
+  const HelperOptions = {
+    from: 'growing.tango@gmail.com',
+    to: req.user.email,
+    subject: title === 'created' ? 'Book created' : 'Book deleted',
+    template: 'email',
+    context: {
+      name: req.user.first_name,
+      title: title === 'created' ? 'added a new book to' : 'deleted a book of',
+    },
+  };
+  gmailTransport.sendMail(HelperOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+    }
+    console.log('email is send');
+    console.log(info);
+  });
 };
 
 module.exports = controller;
