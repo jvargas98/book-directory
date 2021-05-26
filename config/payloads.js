@@ -64,6 +64,23 @@ const modal = {
     },
     {
       type: 'input',
+      block_id: 'input_cover',
+      element: {
+        type: 'plain_text_input',
+        action_id: 'cover_input',
+        placeholder: {
+          type: 'plain_text',
+          text: 'Cover url',
+        },
+      },
+      label: {
+        type: 'plain_text',
+        text: 'Cover',
+        emoji: true,
+      },
+    },
+    {
+      type: 'input',
       block_id: 'input_publication_date',
       element: {
         type: 'datepicker',
@@ -84,6 +101,7 @@ const modal = {
   ],
   type: 'modal',
   callback_id: '123456789',
+  private_metadata: '',
 };
 
 module.exports = modal;

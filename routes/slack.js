@@ -1,5 +1,5 @@
 const express = require('express');
-const slackController = require('../controllers/slack_controller');
+const handlerRequest = require('../services/slack');
 
 const router = express.Router();
 
@@ -11,9 +11,17 @@ const getPayload = (body) =>
 router.post('/', (req, res, next) => {
   const payload = getPayload(req.body);
 
-  console.log(req.body);
+  const response = handlerRequest(payload);
 
-  if (payload.challenge !== undefined) {
+  if (response === null) {
+    console.log('2. Response not found');
+  }
+  console.log(response);
+  response.send(req, res, next);
+
+  // console.log(payload);
+
+  /* if (payload.challenge !== undefined) {
     res.send(payload.challenge);
   } else if (payload.event !== undefined) {
     if (payload.event.type === 'app_mention') {
@@ -40,7 +48,7 @@ router.post('/', (req, res, next) => {
       res.send('');
       slackController.viewSubmission(payload);
     }
-  }
+  } */
 });
 
 module.exports = router;

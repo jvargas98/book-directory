@@ -68,10 +68,12 @@ controller.memberJoinedChannel = async (payload) => {
 };
 
 controller.command = async (payload) => {
+  const modalWithChannel = modal;
+  modalWithChannel.private_metadata = payload.channel_id;
   try {
     await slackClient.views.open({
       trigger_id: payload.trigger_id,
-      view: JSON.stringify(modal),
+      view: JSON.stringify(modalWithChannel),
     });
   } catch (error) {
     console.log(error);
@@ -96,7 +98,13 @@ controller.viewSubmission = async (payload) => {
       publication_date:
         newBook.input_publication_date.publication_date_input.selected_date,
       abstract: newBook.input_abstract.abstract_input.value,
+      book_cover: newBook.input_cover.cover_input.value,
       userId: userDataDB.dataValues.id,
+    });
+
+    await slackClient.chat.postMessage({
+      channel: payload.view.private_metadata,
+      text: 'Book created',
     });
   } catch (error) {
     console.log(error);
