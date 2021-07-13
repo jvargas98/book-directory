@@ -1,3 +1,4 @@
+const PDFDocument = require('pdfkit');
 const { query } = require('express');
 const db = require('../models');
 
@@ -98,6 +99,39 @@ controller.destroy = async (req, res, next) => {
   try {
     await Book.destroy({ where: { id: req.body.id } });
     res.redirect('/');
+  } catch (err) {
+    next(err);
+  }
+};
+
+controller.generatePdf = async (req, res, next) => {
+  try {
+    const doc = new PDFDocument();
+
+    let filename = 'summary';
+    // Stripping special characters
+    filename = `${encodeURIComponent(filename)}.pdf`;
+
+    const books = await Book.findAll({ where: { userId: req.user.id } });
+
+    let content = `User: ${req.user.email}, date: ${new Date()
+      .toJSON()
+      .slice(0, 10)
+      .replace(/-/g, '/')}\nBooks:\n`;
+
+    content += books.map((book) => {
+      let body = '';
+      const element = `Title: ${book.title}, Author: ${book.author}\n`;
+      body += element;
+      return body;
+    });
+
+    res.setHeader('Content-disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-type', 'application/pdf');
+    doc.y = 300;
+    doc.text(content, 50, 50);
+    doc.pipe(res);
+    doc.end();
   } catch (err) {
     next(err);
   }
