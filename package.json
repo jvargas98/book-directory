@@ -8,6 +8,7 @@
     "db:migrate": "npx sequelize-cli db:migrate"
   },
   "dependencies": {
+    "@slack/web-api": "^6.2.3",
     "bcrypt": "^5.0.1",
     "bootstrap": "4.5.x",
     "cookie-parser": "~1.4.4",
