@@ -1,0 +1,46 @@
+<form method='POST' action='/books'>
+  <div class="container-fluid">
+    <h1>{{title}}</h1>
+    {{#if docreate}}
+    <input type='hidden' name='docreate' value="create">
+    {{else}}
+    <input type='hidden' name='docreate' value="update">
+    {{/if}}
+    <div class="form-group row align-items-center">
+      <label for="title" class="col-1 col-form-label">Title</label>
+      {{#if docreate }}
+      <input type='text' class="form-control col" id="title" placeholder="title" name='title' value='' />
+      {{else}}
+      <input type='hidden' name='id' value='{{#if book }}{{id}}{{/if}}' />
+      <input type="text" class="form-control col" id='title' name='title' placeholder="title"
+        value='{{#if book }}{{book.title}}{{/if}}'>
+      {{/if}}
+    </div>
+
+    <div class="form-group row">
+      <label for="author" class="col-1 col-form-label">Author</label>
+      <input type="text" class="form-control col" id='author' name='author' placeholder="author"
+        value='{{#if book }}{{book.author}}{{/if}}'>
+    </div>
+
+    <div class="form-group row">
+      <label for="publication_date" class="col-1 col-form-label">Publication</label>
+      <input type="date" class="form-control col" id="publication_date" name='publication_date'
+        value='{{#if book }}{{book.publicdation_date}}{{/if}}'>
+    </div>
+
+    <div class="form-group row">
+      <label for="abstract" class="col-1 col-form-label">Abstract</label>
+      <textarea class="form-control" id="abstract" name='abstract'
+        rows="5">{{#if book }}{{book.abstract}}{{/if}}</textarea>
+    </div>
+
+    <div class="form-group row">
+      <label for="book_cover" class="col-1 col-form-label">Book cover</label>
+      <input type="text" class="form-control col" id="book_cover" placeholder="book cover url" name='book_cover'
+        value='{{#if book }}{{book.book_cover}}{{/if}}'>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+</form>
