@@ -11,6 +11,7 @@ const db = require('./models');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const booksRouter = require('./routes/books');
+const slackRouter = require('./routes/slack');
 
 const app = express();
 
@@ -55,6 +56,7 @@ app.use(passport.session()); // persistent login sessions
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/books', booksRouter);
+app.use('/slack', slackRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
