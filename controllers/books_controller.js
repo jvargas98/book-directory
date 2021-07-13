@@ -2,12 +2,13 @@ const { query } = require('express');
 const db = require('../models');
 
 const Book = db.books;
+const User = db.users;
 
 const controller = {};
 
 controller.index = async (req, res, next) => {
   try {
-    const books = await Book.findAll();
+    const books = await Book.findAll({ where: { userId: req.user.id } });
     res.render('index', { title: 'Books', books });
   } catch (err) {
     next(err);
@@ -49,6 +50,7 @@ controller.create = async (req, res, next) => {
         publication_date: req.body.publication_date,
         abstract: req.body.abstract,
         book_cover: req.body.book_cover,
+        userId: req.user.id,
       });
       res.redirect('/');
     } else {
